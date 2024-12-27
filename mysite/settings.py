@@ -25,8 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #SECRET_KEY = 'django-insecure-8rrv(lmlqxq^hz5nqwbz*zak4w@n#8$73bk3gghnt9f$i805pc'
 SECRET_KEY = os.environ.get('SECRET_KEY',default='dadsadadafa')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-#DEBUG = 'RENDER' not in os.environ
+#DEBUG = True
+DEBUG = 'RENDER' not in os.environ
 #DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS =['https://app-admin-correo.onrender.com','localhost','127.0.01']
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
