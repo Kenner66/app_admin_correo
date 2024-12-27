@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrador de Correos</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #a1c4fd, #c2e9fb); /* Colores más suaves */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333; /* Color de texto más suave */
+            text-align: center;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9); /* Fondo más claro */
+            backdrop-filter: blur(8px); /* Efecto difuso más suave */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #4a90e2; /* Color de texto suave */
+        }
+        .description {
+            font-size: 18px;
+            margin-bottom: 40px;
+            color: #777; /* Texto más suave */
+        }
+        .logo img {
+            width: 120px;
+            height: auto;
+            margin-bottom: 30px;
+        }
+        .icon-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+        }
+        .icon-buttons a {
+            font-size: 40px;
+            color: #ffffff;
+            background-color: #6c8ee6; /* Color de fondo suave */
+            padding: 20px;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+        .icon-buttons a:hover {
+            background-color: #5a7fd2; /* Cambio suave en hover */
+        }
+        .status {
+            background-color: #55d0a5; /* Color suave para el estado */
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .footer {
+            font-size: 14px;
+            color: #777;
+            margin-top: 30px;
+        }
+        .login-link {
+            display: inline-block;
+            background-color: #4a90e2; /* Color suave del botón */
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        .login-link:hover {
+            background-color: #357ab7; /* Cambio suave al pasar el mouse */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Logo -->
+        <div class="logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg/2203px-Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg.png" alt="Logo de Outlook">
+        </div>
+
+        <!-- Estado de la sesión -->
+        <div class="status">
+            Conectado con éxito al servidor de Outlook.
+        </div>
+
+        <!-- Título y descripción -->
+        <h1>Bienvenido al Administrador de Correos</h1>
+        <p class="description">Administra y organiza los correos electrónicos de tu empresa o institución de forma fácil y rápida.</p>
+
+        <!-- Enlace para iniciar sesión con Outlook -->
+        <a href="{% url 'login' %}" class="login-link">Iniciar sesión con Outlook</a>
+
+        <!-- Iconos de acciones -->
+        <div class="icon-buttons">
+            <a href="#" title="Ver correos"><i class="fas fa-envelope"></i></a>
+            <a href="#" title="Gestionar cuentas"><i class="fas fa-users"></i></a>
+            <a href="#" title="Configuración"><i class="fas fa-cogs"></i></a>
+        </div>
+
+        <!-- Pie de página -->
+        <div class="footer">
+            <p>&copy; 2024 Administrador de Correos. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</body>
+</html>

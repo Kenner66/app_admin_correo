@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-4">Correos Eliminados</h1>
+    
+    <!-- Lista de Correos -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Asunto</th>
+                <th>Remitente</th>
+                <th>Fecha</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for email in emails %}
+                <tr>
+                    <td>{{ email.subject }}</td>
+                    <td>{{ email.sender.emailAddress.address }}</td>
+                    <td>{{ email.receivedDateTime }}</td>
+                    <td><a href="{% url 'email_detail' email.id %}" class="btn btn-info btn-sm">Ver</a></td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">No tienes correos eliminados</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <!-- Paginación -->
+    <nav>
+        <ul class="pagination">
+            {% if prev_page %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ prev_page }}">Anterior</a>
+                </li>
+            {% endif %}
+            {% if next_page %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ next_page }}">Siguiente</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endblock %}

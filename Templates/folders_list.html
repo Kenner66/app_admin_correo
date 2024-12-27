@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Lista de Carpetas</h2>
+    <a href="{% url 'create_folder' %}" class="btn btn-primary mb-4">Crear Carpeta</a>
+
+    <div class="container">
+        <div class="row">
+            {% for folder in folders %}
+                <div class="col-md-4 mb-4">
+                    <div class="card text-center shadow">
+                        <!-- Ícono de la carpeta en la cabecera -->
+                        <div class="card-header bg-primary text-white">
+                            <i class="bi bi-folder-fill" style="font-size: 3rem;"></i>
+                        </div>
+                        <div class="card-body">
+                            <!-- Nombre de la carpeta -->
+                            <h5 class="card-title mt-2">{{ folder.displayName }}</h5>
+                            <div class="d-flex justify-content-center mt-3">
+                                <!-- Botones de acción -->
+                                <a href="{% url 'view_folder_emails' folder.id %}" class="btn btn-success btn-sm me-2">
+                                    <i class="bi bi-envelope-fill"></i> Ver Emails
+                                </a>
+                                <a href="{% url 'rename_folder' folder.id %}" class="btn btn-warning btn-sm me-2">
+                                    <i class="bi bi-pencil-fill"></i> Renombrar
+                                </a>
+                                <a href="{% url 'delete_folder' folder.id %}" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash-fill"></i> Eliminar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

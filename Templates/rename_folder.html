@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Renombrar Carpeta</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="new_name" placeholder="Nuevo nombre" required>
+        <button type="submit">Renombrar</button>
+    </form>
+{% endblock %}

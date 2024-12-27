@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1>Redactar Nuevo Correo</h1>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="recipient" class="form-label">Destinatario</label>
+                <input type="email" name="recipient" id="recipient" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="subject" class="form-label">Asunto</label>
+                <input type="text" name="subject" id="subject" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="body" class="form-label">Contenido</label>
+                <textarea name="body" id="body" rows="6" class="form-control" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+    </div>
+{% endblock %}

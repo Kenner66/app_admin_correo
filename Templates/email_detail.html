@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="mt-4">Detalle del Correo</h1>
+        
+        <div class="card">
+            <div class="card-header">
+                <strong>{{ email.subject }}</strong>
+            </div>
+            <div class="card-body">
+                <p><strong>Remitente:</strong> {{ email.sender.emailAddress.address }}</p>
+                <p><strong>Fecha:</strong> {{ email.receivedDateTime }}</p>
+                <hr>
+                <p><strong>Contenido:</strong></p>
+                <div>
+                    <!-- Mostrar el cuerpo del correo (puede ser en HTML o texto plano) -->
+                    <p>{{ email.body.content | safe }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <a href="{% url 'emails' %}" class="btn btn-primary mt-3">Volver a la lista de correos</a>
+    </div>
+{% endblock %}

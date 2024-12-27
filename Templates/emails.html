@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="mt-4">Mis Correos</h1>
+
+    <!-- Lista de Correos -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Asunto</th>
+                <th>Remitente</th>
+                <th>Fecha</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for email in emails %}
+                <tr>
+                    <td>{{ email.subject }}</td>
+                    <td>{{ email.sender.emailAddress.address }}</td>
+                    <td>{{ email.receivedDateTime }}</td>
+                    <td>
+                        <form method="POST" action="{% url 'move_email_to_folder' email.id %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <select name="folder_id" class="form-control" required>
+                                    <option value="">Selecciona una carpeta</option>
+                                    {% for folder in folders %}
+                                        <option value="{{ folder.id }}">{{ folder.displayName }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm">Mover</button>
+                        </form>
+                    </td>
+                    <td><a href="{% url 'email_detail' email.id %}" class="btn btn-info btn-sm">Ver</a></td>
+                    <td>
+                        {% if email.isRead %}
+                            <a href="{% url 'toggle_read_status' email.id 'false' %}" class="btn btn-warning btn-sm">Marcar como no leído</a>
+                        {% else %}
+                            <a href="{% url 'toggle_read_status' email.id 'true' %}" class="btn btn-success btn-sm">Marcar como leído</a>
+                        {% endif %}
+                    </td>
+                    <td><a href="{% url 'delete_email' email.id %}" class="btn btn-danger">Eliminar</a></td>
+
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">No tienes correos</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Paginación -->
+    <nav>
+        <ul class="pagination">
+            {% if prev_page %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ prev_page }}" aria-label="Anterior">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+            
+            {% if next_page %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ next_page }}" aria-label="Siguiente">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endblock %}
