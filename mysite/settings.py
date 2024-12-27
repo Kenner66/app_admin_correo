@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY',default='dadsadadafa')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'RENDER' not in os.environ
 #DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS =[]
+ALLOWED_HOSTS =['https://app-admin-correo.onrender.com','localhost','127.0.01']
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
