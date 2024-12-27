@@ -6,7 +6,6 @@ import requests
 from django.http import JsonResponse
 from django import forms
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 
 def login(request):
     auth_app = ConfidentialClientApplication(
@@ -18,6 +17,7 @@ def login(request):
         scopes=['Mail.ReadWrite','Mail.Send','User.Read'],
         redirect_uri=settings.MS_REDIRECT_URI
     )
+    
     print("Generated auth URL:", auth_url)
     return redirect(auth_url)
 

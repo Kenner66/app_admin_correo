@@ -14,8 +14,7 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 load_dotenv()
-from decouple import Config
-config = Config()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -36,8 +35,10 @@ RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
  
-MS_CLIENT_ID = config('MS_CLIENT_ID')
-MS_CLIENT_SECRET = config('MS_CLIENT_SECRET')
+MS_CLIENT_ID = os.getenv('MS_CLIENT_ID')
+MS_CLIENT_SECRET = os.getenv('MS_CLIENT_SECRET')
+print("MS_CLIENT_ID:", os.getenv('MS_CLIENT_ID'))
+print("MS_CLIENT_SECRET:", os.getenv('MS_CLIENT_SECRET'))
 MS_AUTHORITY = 'https://login.microsoftonline.com/common'
 MS_REDIRECT_URI = 'https://app-admin-correo.onrender.com/auth/callback'
 MS_SCOPE= 'https://graph.microsoft.com/.default'
