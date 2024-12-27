@@ -37,12 +37,9 @@ if RENDER_EXTERNAL_HOSTNAME:
 MS_CLIENT_ID = os.getenv('MS_CLIENT_ID')
 MS_CLIENT_SECRET = os.getenv('MS_CLIENT_SECRET')
 MS_AUTHORITY = os.getenv('MS_AUTHORITY')
-MS_REDIRECT_URI = os.getenv('MS_REDIRECT_URI')
+MS_REDIRECT_URI = 'https://app-admin-correo.onrender.com/auth/callback'
 MS_SCOPE = os.getenv('MS_SCOPE')
 
-
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
