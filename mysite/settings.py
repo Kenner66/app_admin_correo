@@ -25,8 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #SECRET_KEY = 'django-insecure-8rrv(lmlqxq^hz5nqwbz*zak4w@n#8$73bk3gghnt9f$i805pc'
 SECRET_KEY = os.environ.get('SECRET_KEY',default='dadsadadafa')
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = 'RENDER' not in os.environ
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = 'RENDER' not in os.environ
+#DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS =[]
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
@@ -38,7 +38,7 @@ MS_CLIENT_ID = config('MS_CLIENT_ID')
 MS_CLIENT_SECRET = config('MS_CLIENT_SECRET')
 MS_AUTHORITY = config('MS_AUTHORITY')
 MS_REDIRECT_URI = config('MS_REDIRECT_URI')
-MS_SCOPE = config('MS_SCOPE').split(',')
+MS_SCOPE = config('MS_SCOPE')
 
 
 
