@@ -19,4 +19,5 @@ urlpatterns = [
     path('folders/delete/<str:folder_id>/', views.delete_folder, name='delete_folder'),
     path('move_email/<str:email_id>/', views.move_email_to_folder, name='move_email_to_folder'),   
     path('folders/<str:folder_id>/emails/', views.view_folder_emails, name='view_folder_emails'),
+    path('emails/filter/', views.filter_emails, name='filter_emails'),
 ]

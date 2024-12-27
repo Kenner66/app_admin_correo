@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Filtrar Correos</h2>
+    <form method="GET" action="{% url 'filter_emails' %}">
+        <div class="form-group">
+            <label for="domain">Filtrar por dominio:</label>
+            <input type="text" name="domain" id="domain" class="form-control" value="{{ domain_filter }}" placeholder="Ej: gmail.com">
+        </div>
+        <div class="form-group">
+            <label for="start_date">Fecha de inicio:</label>
+            <input type="date" name="start_date" id="start_date" class="form-control" value="{{ start_date }}">
+        </div>
+        <div class="form-group">
+            <label for="end_date">Fecha de fin:</label>
+            <input type="date" name="end_date" id="end_date" class="form-control" value="{{ end_date }}">
+        </div>
+        <div class="form-group">
+            <label for="subject">Filtrar por asunto:</label>
+            <input type="text" name="subject" id="subject" class="form-control" value="{{ subject_filter }}">
+        </div>
+        <div class="form-group">
+            <label for="read">Estado de lectura:</label>
+            <select name="read" id="read" class="form-control">
+                <option value="">Todos</option>
+                <option value="true" {% if read_filter == 'true' %}selected{% endif %}>Leídos</option>
+                <option value="false" {% if read_filter == 'false' %}selected{% endif %}>No Leídos</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+    </form>
+
+    <h2>Correos Filtrados</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Asunto</th>
+                <th>De</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for email in emails %}
+                <tr>
+                    <td>{{ email.subject }}</td>
+                    <td>{{ email.sender.emailAddress.address }}</td>
+                    <td>{{ email.receivedDateTime }}</td>
+                    <td>
+                        <a href="{% url 'view_email' email.id %}" class="btn btn-info btn-sm">Ver</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">No hay correos que coincidan con el filtro.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if next_page %}
+        <a href="{{ next_page }}" class="btn btn-secondary">Página Siguiente</a>
+    {% endif %}
+{% endblock %}

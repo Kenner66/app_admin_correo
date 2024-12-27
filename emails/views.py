@@ -480,3 +480,55 @@ def view_folder_emails(request, folder_id):
     else:
         return render(request, 'error.html', {'message': 'Error al obtener los correos de la carpeta.'})
 
+def filter_emails(request):
+    access_token = request.session.get('access_token')
+
+    if not access_token:
+        return redirect('login')
+
+    headers = {'Authorization': f'Bearer {access_token}'}
+    
+    # Obtenemos los filtros de la URL
+    domain_filter = request.GET.get('domain', '')
+    start_date = request.GET.get('start_date', '')
+    end_date = request.GET.get('end_date', '')
+    subject_filter = request.GET.get('subject', '')
+    read_filter = request.GET.get('read', '')
+
+    url = f'https://graph.microsoft.com/v1.0/me/messages?$top=10'
+
+    # Aplicamos los filtros de dominio, fecha, etc.
+    if domain_filter:
+        url += f"&$filter=sender/emailAddress/domain eq '{domain_filter}'"
+    if start_date and end_date:
+        url += f"&$filter=receivedDateTime ge {start_date} and receivedDateTime le {end_date}"
+    if subject_filter:
+        url += f"&$filter=contains(subject,'{subject_filter}')"
+    if read_filter:
+        url += f"&$filter=isRead eq {read_filter}"
+
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        data = response.json()
+        emails = data.get('value', [])
+
+        # Paginación
+        prev_page = None
+        next_page = None
+        if data.get('@odata.nextLink'):
+            next_page = data.get('@odata.nextLink')
+
+        return render(request, 'emails_filtered.html', {
+            'emails': emails,
+            'domain_filter': domain_filter,
+            'start_date': start_date,
+            'end_date': end_date,
+            'subject_filter': subject_filter,
+            'read_filter': read_filter,
+            'prev_page': prev_page,
+            'next_page': next_page
+        })
+
+    error_message = response.json().get('error', {}).get('message', 'Unknown error')
+    return render(request, 'error.html', {'message': f"Error al obtener los correos: {error_message}"})
