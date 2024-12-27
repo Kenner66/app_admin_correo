@@ -1,64 +1,70 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Filtrar Correos</h2>
-    <form method="GET" action="{% url 'filter_emails' %}">
-        <div class="form-group">
-            <label for="domain">Filtrar por dominio:</label>
-            <input type="text" name="domain" id="domain" class="form-control" value="{{ domain_filter }}" placeholder="Ej: gmail.com">
-        </div>
-        <div class="form-group">
-            <label for="start_date">Fecha de inicio:</label>
-            <input type="date" name="start_date" id="start_date" class="form-control" value="{{ start_date }}">
-        </div>
-        <div class="form-group">
-            <label for="end_date">Fecha de fin:</label>
-            <input type="date" name="end_date" id="end_date" class="form-control" value="{{ end_date }}">
-        </div>
-        <div class="form-group">
-            <label for="subject">Filtrar por asunto:</label>
-            <input type="text" name="subject" id="subject" class="form-control" value="{{ subject_filter }}">
-        </div>
-        <div class="form-group">
-            <label for="read">Estado de lectura:</label>
-            <select name="read" id="read" class="form-control">
-                <option value="">Todos</option>
-                <option value="true" {% if read_filter == 'true' %}selected{% endif %}>Leídos</option>
-                <option value="false" {% if read_filter == 'false' %}selected{% endif %}>No Leídos</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Filtrar</button>
+<div class="container my-4">
+    <!-- Título -->
+    <h2 class="text-center mb-4">Filtrado de Correos por Dominio</h2>
+
+    <!-- Botón de volver -->
+    <div class="d-flex justify-content-start mb-3">
+        <a href="{% url 'emails' %}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Volver a la Bandeja
+        </a>
+    </div>
+
+    <!-- Formulario de filtrado -->
+    <form method="GET" action="{% url 'filter_emails' %}" class="mb-4 d-flex align-items-center gap-2">
+        <input type="text" name="domain" class="form-control" placeholder="Filtrar por dominio ej: @unfv.edu.pe" value="{{ domain }}">
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-filter"></i> Filtrar
+        </button>
     </form>
 
-    <h2>Correos Filtrados</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Asunto</th>
-                <th>De</th>
-                <th>Fecha</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for email in emails %}
+    <!-- Tabla de correos -->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
                 <tr>
-                    <td>{{ email.subject }}</td>
-                    <td>{{ email.sender.emailAddress.address }}</td>
-                    <td>{{ email.receivedDateTime }}</td>
-                    <td>
-                        <a href="{% url 'view_email' email.id %}" class="btn btn-info btn-sm">Ver</a>
-                    </td>
+                    <th scope="col">Asunto</th>
+                    <th scope="col">Remitente</th>
+                    <th scope="col">Fecha</th>
                 </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="4">No hay correos que coincidan con el filtro.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for email in emails %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'email_detail' email.id %}" class="text-decoration-none text-primary">
+                                {{ email.subject }}
+                            </a>
+                        </td>
+                        <td>{{ email.sender.emailAddress.address }}</td>
+                        <td>{{ email.receivedDateTime }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="3" class="text-center text-muted">No hay correos disponibles.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-    {% if next_page %}
-        <a href="{{ next_page }}" class="btn btn-secondary">Página Siguiente</a>
-    {% endif %}
+    <!-- Paginación -->
+    <div class="d-flex justify-content-between">
+        {% if prev_page %}
+            <a href="?page={{ prev_page }}{% if domain %}&domain={{ domain }}{% endif %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left-circle"></i> Anterior
+            </a>
+        {% else %}
+            <div></div>
+        {% endif %}
+
+        {% if next_page %}
+            <a href="?page={{ next_page }}{% if domain %}&domain={{ domain }}{% endif %}" class="btn btn-outline-secondary">
+                Siguiente <i class="bi bi-arrow-right-circle"></i>
+            </a>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

@@ -480,55 +480,64 @@ def view_folder_emails(request, folder_id):
     else:
         return render(request, 'error.html', {'message': 'Error al obtener los correos de la carpeta.'})
 
+# views.py
+from django.shortcuts import render, redirect
+import requests
+
+from django.shortcuts import render, redirect
+import requests
+
 def filter_emails(request):
     access_token = request.session.get('access_token')
+    user_email = request.session.get('user_email')  # Obtenemos el email del usuario desde la sesión
 
     if not access_token:
-        return redirect('login')
+        return redirect('login')  # Redirige si no está autenticado
 
     headers = {'Authorization': f'Bearer {access_token}'}
-    
-    # Obtenemos los filtros de la URL
-    domain_filter = request.GET.get('domain', '')
-    start_date = request.GET.get('start_date', '')
-    end_date = request.GET.get('end_date', '')
-    subject_filter = request.GET.get('subject', '')
-    read_filter = request.GET.get('read', '')
+    page_size = 100  # Límite de correos por página
+    page = int(request.GET.get('page', 1))  # Página actual (por defecto la primera)
+    skip = (page - 1) * page_size  # Correos a omitir según la página
 
-    url = f'https://graph.microsoft.com/v1.0/me/messages?$top=10'
-
-    # Aplicamos los filtros de dominio, fecha, etc.
-    if domain_filter:
-        url += f"&$filter=sender/emailAddress/domain eq '{domain_filter}'"
-    if start_date and end_date:
-        url += f"&$filter=receivedDateTime ge {start_date} and receivedDateTime le {end_date}"
-    if subject_filter:
-        url += f"&$filter=contains(subject,'{subject_filter}')"
-    if read_filter:
-        url += f"&$filter=isRead eq {read_filter}"
+    # Construcción de la URL con paginación
+    url = f"https://graph.microsoft.com/v1.0/me/messages?$top={page_size}&$skip={skip}"
 
     response = requests.get(url, headers=headers)
 
     if response.status_code == 200:
         data = response.json()
-        emails = data.get('value', [])
+        emails = data.get('value', [])  # Correos en la página actual
 
-        # Paginación
-        prev_page = None
-        next_page = None
-        if data.get('@odata.nextLink'):
-            next_page = data.get('@odata.nextLink')
+        # Filtra solo los correos recibidos (donde el remitente no es el usuario actual)
+        received_emails = [
+            email for email in emails
+            if email.get('sender', {}).get('emailAddress', {}).get('address') != user_email
+        ]
+
+        # Obtiene el dominio para filtrar desde el parámetro GET
+        domain = request.GET.get('domain', '').strip()
+
+        # Si hay un dominio proporcionado, filtra los correos por ese dominio
+        if domain:
+            filtered_emails = [
+                email for email in received_emails
+                if domain.lower() in email.get('sender', {}).get('emailAddress', {}).get('address', '').lower()
+            ]
+        else:
+            filtered_emails = received_emails
+
+        # Verifica si hay más correos disponibles para paginación
+        next_page = page + 1 if data.get('@odata.nextLink') else None
+        prev_page = page - 1 if page > 1 else None
 
         return render(request, 'emails_filtered.html', {
-            'emails': emails,
-            'domain_filter': domain_filter,
-            'start_date': start_date,
-            'end_date': end_date,
-            'subject_filter': subject_filter,
-            'read_filter': read_filter,
+            'emails': filtered_emails,
+            'domain': domain,  # Para mostrar el filtro aplicado en la plantilla
+            'page': page,
             'prev_page': prev_page,
             'next_page': next_page
         })
 
+    # En caso de error
     error_message = response.json().get('error', {}).get('message', 'Unknown error')
     return render(request, 'error.html', {'message': f"Error al obtener los correos: {error_message}"})

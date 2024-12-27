@@ -30,7 +30,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY',default='dadsadadafa')
 #DEBUG = True
 DEBUG = 'RENDER' not in os.environ
 #DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS =['https://app-admin-correo.onrender.com','localhost','127.0.01']
+ALLOWED_HOSTS =['https://app-admin-correo.onrender.com','localhost','127.0.0.1']
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
@@ -42,7 +42,6 @@ print("MS_CLIENT_SECRET:", os.getenv('MS_CLIENT_SECRET'))
 MS_AUTHORITY = 'https://login.microsoftonline.com/common'
 MS_REDIRECT_URI = 'https://app-admin-correo.onrender.com/auth/callback'
 MS_SCOPE= 'https://graph.microsoft.com/.default'
-
 
 
 
