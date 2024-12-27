@@ -35,10 +35,9 @@ RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
  
-
 MS_CLIENT_ID = os.getenv('MS_CLIENT_ID')
 MS_CLIENT_SECRET = os.getenv('MS_CLIENT_SECRET')
-MS_AUTHORITY = os.getenv('MS_AUTHORITY')
+MS_AUTHORITY = 'https://login.microsoftonline.com/common'
 MS_REDIRECT_URI = 'https://app-admin-correo.onrender.com/auth/callback'
 MS_SCOPE = os.getenv('MS_SCOPE')
 
