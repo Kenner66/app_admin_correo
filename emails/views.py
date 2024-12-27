@@ -9,7 +9,6 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 def login(request):
-    """Redirige al usuario a Microsoft para iniciar sesión"""
     auth_app = ConfidentialClientApplication(
         client_id=settings.MS_CLIENT_ID,
         client_credential=settings.MS_CLIENT_SECRET,
@@ -61,7 +60,7 @@ def get_emails(request):
     page = int(page)  # Convertir la página a entero
     skip = (page - 1) * page_size  # Calcular la cantidad de correos que se deben omitir
 
-    url = f'https://graph.microsoft.com/v1.0/me//mailFolders/inbox/messages?$top={page_size}&$skip={skip}'
+    url = f'https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$top={page_size}&$skip={skip}'
     
     response = requests.get(url, headers=headers)
 
