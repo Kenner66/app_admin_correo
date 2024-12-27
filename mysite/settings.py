@@ -39,7 +39,8 @@ MS_CLIENT_ID = os.getenv('MS_CLIENT_ID')
 MS_CLIENT_SECRET = os.getenv('MS_CLIENT_SECRET')
 MS_AUTHORITY = 'https://login.microsoftonline.com/common'
 MS_REDIRECT_URI = 'https://app-admin-correo.onrender.com/auth/callback'
-MS_SCOPE = os.getenv('MS_SCOPE')
+MS_SCOPE= 'https://graph.microsoft.com/.default'
+
 
 
 
